@@ -24,13 +24,13 @@ $qn_tools/QnAnalysisCorrect/QnAnalysisCorrect -i $filelist \
                                               -t hades_analysis_tree \
                                               --yaml-config-file=/lustre/nyx/hades/user/mmamaev/QnAnalysis/setups/hades/mc-correction-auau-123-occupancy.yml \
                                               --yaml-config-name=hades_analysis \
-                                              -n -1 \
+                                              -n 1000 \
                                               --cuts-macro Hades/AuAu1.23.C \
                                               --event-cuts hades/auau/1.23/event_cuts/standard/pt3
 
 echo "executing $build_dir/yield -i $filelist \
                                 -t hades_analysis_tree \
-                                -n -1 -o yield.root \
+                                -n 1000 -o yield.root \
                                 --cuts-macro Hades/AuAu1.23.C \
                                 --pdg-code $pdg_code \
                                 --q-vector-file=correction_out.root \
@@ -40,7 +40,7 @@ echo "executing $build_dir/yield -i $filelist \
 
 $build_dir/yield -i $filelist \
                 -t hades_analysis_tree \
-                -n -1 -o yield.root \
+                -n 1000 -o yield.root \
                 --cuts-macro Hades/AuAu1.23.C \
                 --pdg-code $pdg_code \
                 --q-vector-file=correction_out.root \
