@@ -20,7 +20,7 @@ module load /cvmfs/vae.gsi.de/centos7/modules/linux-centos7-x86_64/gcc-8.1.0-gcc
 echo "loading " $root_620
 source $root_620
 
-$qn_tools/QnAnalysisCorrect/QnAnalysisCorrect -i list.txt \
+$qn_tools/QnAnalysisCorrect/QnAnalysisCorrect -i $filelist \
                                               -t hades_analysis_tree \
                                               --yaml-config-file=/lustre/nyx/hades/user/mmamaev/QnAnalysis/setups/hades/mc-correction-auau-123-occupancy.yml \
                                               --yaml-config-name=hades_analysis \
