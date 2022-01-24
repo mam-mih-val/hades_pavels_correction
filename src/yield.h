@@ -89,6 +89,7 @@ private:
 
   bool is_mc_{false};
 
+  int qvector_event_{0};
   int current_event_{0};
 
 TASK_DEF(Yield, 0)

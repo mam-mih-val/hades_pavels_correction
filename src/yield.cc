@@ -95,12 +95,17 @@ void Yield::UserInit(std::map<std::string, void *> &Map) {
 }
 
 void Yield::UserExec() {
+  if( current_event_ == 0 ) {
+    current_event_++;
+    return;
+  }
   auto centrality = (*event_header_)[GetVar( "event_header/selected_tof_rpc_hits_centrality" )].GetVal();
   h1_centrality_->Fill( centrality );
-  tree_qvector_->GetEntry(current_event_);
+  tree_qvector_->GetEntry(qvector_event_);
   this->LoopRecTracks();
   if( is_mc_ )
     this->LoopTruParticles();
+  qvector_event_++;
   current_event_++;
 }
 
