@@ -28,25 +28,16 @@ $qn_tools/QnAnalysisCorrect/QnAnalysisCorrect -i $filelist \
                                               --cuts-macro Hades/AuAu1.23.C \
                                               --event-cuts hades/auau/1.23/event_cuts/standard/pt3
 
-echo "executing $build_dir/yield -i $filelist \
-                                -t hades_analysis_tree \
-                                -n 1000 -o yield.root \
-                                --cuts-macro Hades/AuAu1.23.C \
-                                --pdg-code $pdg_code \
-                                --q-vector-file=correction_out.root \
-                                --q-vector-name=W1_PLAIN \
-                                --cuts-macro Hades/AuAu1.23.C \
-                                --event-cuts hades/auau/1.23/event_cuts/standard/pt3"
+echo "executing $build_dir/yield -i $filelist -t hades_analysis_tree -n 1000 -o yield.root --cuts-macro Hades/AuAu1.23.C --pdg-code $pdg_code --q-vector-file=correction_out.root --q-vector-name=W1_PLAIN --cuts-macro=Hades/AuAu1.23.C --event-cuts=hades/auau/1.23/event_cuts/standard/pt3"
 
 $build_dir/yield -i $filelist \
                 -t hades_analysis_tree \
                 -n 1000 -o yield.root \
-                --cuts-macro Hades/AuAu1.23.C \
                 --pdg-code $pdg_code \
                 --q-vector-file=correction_out.root \
                 --q-vector-name=W1_PLAIN \
-                --cuts-macro Hades/AuAu1.23.C \
-                --event-cuts hades/auau/1.23/event_cuts/standard/pt3
+                --cuts-macro=Hades/AuAu1.23.C \
+                --event-cuts=hades/auau/1.23/event_cuts/standard/pt3
 
 date $format
 echo JOB FINISHED!
