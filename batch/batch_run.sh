@@ -22,7 +22,7 @@ source $root_620
 
 $qn_tools/QnAnalysisCorrect/QnAnalysisCorrect -i $filelist \
                                               -t hades_analysis_tree \
-                                              --yaml-config-file=/lustre/nyx/hades/user/mmamaev/QnAnalysis/setups/hades/mc-correction-auau-123-occupancy.yml \
+                                              --yaml-config-file=/lustre/nyx/hades/user/mmamaev/QnAnalysis/setups/hades/correction-auau-123-plains.yml \
                                               --yaml-config-name=hades_analysis \
                                               -n 1000 \
                                               --cuts-macro Hades/AuAu1.23.C \
