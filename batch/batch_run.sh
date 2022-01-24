@@ -28,9 +28,6 @@ $qn_tools/QnAnalysisCorrect/QnAnalysisCorrect -i list.txt \
                                               --cuts-macro Hades/AuAu1.23.C \
                                               --event-cuts hades/auau/1.23/event_cuts/standard/pt3
 
-echo "loading " $ownroot
-source $ownroot
-
 echo "executing $build_dir/yield -i $filelist \
                                 -t hades_analysis_tree \
                                 -n -1 -o yield.root \
