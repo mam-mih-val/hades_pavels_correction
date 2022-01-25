@@ -40,7 +40,9 @@ void Yield::UserInit(std::map<std::string, void *> &Map) {
   }
 
   h1_centrality_ = new TH1F( "centrality", ";TOF+RPC hits centrality (%)", 20, 0.0, 100.0 );
-
+  h1_psi_ep_ = new TH1F( "h1_psi_ep_", ";#psi_{1};", 350, -3.5, 3.5 );
+  h1_qx_ = new TH1F( "h1_qx_", ";Q_{x};", 150, -1.5, 1.5 );
+  h1_qy_ = new TH1F( "h1_qy_", ";Q_{y};", 150, -1.5, 1.5 );
   h3_rec_delta_phi_theta_centrality_all_ = new TH3F("h3_rec_delta_phi_theta_centrality_all",
                                                     ";#Delta#phi (rad);#theta;centrality (%)",
                                                     350, -3.5, 3.5,
@@ -63,6 +65,7 @@ void Yield::UserInit(std::map<std::string, void *> &Map) {
   p2_rec_v1_all_ = new TProfile2D( "p2_rec_v1_all", ";theta;centrality", 140, 0.2, 1.6, 12, 0.0, 60 );
 
   if( is_mc_ ) {
+    h1_psi_rp_difference_ = new TH1F( "h1_psi_rp_difference_", ";#Psi_{RP}-#Psi_{EP}", 350, -3.5, 3.5 );
     h3_tru_delta_phi_theta_centrality_all_ =
         new TH3F("h3_tru_delta_phi_theta_centrality_all",
                  ";#Delta#phi (rad);#theta;centrality (%)", 350, -3.5, 3.5, 140,
@@ -95,10 +98,6 @@ void Yield::UserInit(std::map<std::string, void *> &Map) {
 }
 
 void Yield::UserExec() {
-  if( current_event_ == 0 ) {
-    current_event_++;
-    return;
-  }
   auto centrality = (*event_header_)[GetVar( "event_header/selected_tof_rpc_hits_centrality" )].GetVal();
   h1_centrality_->Fill( centrality );
   tree_qvector_->GetEntry(qvector_event_);
@@ -118,7 +117,13 @@ void Yield::LoopRecTracks() {
   auto rec_dca_z_var = GetVar("mdc_vtx_tracks/dca_z");
 
   auto qvec = dc_qvector_->At(0);
-  auto psi_rp = qvec.psi(1);
+  auto x_qvec = qvec.x(1);
+  auto y_qvec = qvec.y(1);
+  auto psi_ep = atan2(y_qvec, x_qvec);
+
+  h1_psi_ep_->Fill(psi_ep);
+  h1_qx_->Fill(x_qvec);
+  h1_qy_->Fill(y_qvec);
 
   for (auto track : tracks_->Loop()) {
     auto pid = track.DataT<Particle>()->GetPid();
@@ -131,7 +136,7 @@ void Yield::LoopRecTracks() {
     auto chi2 = track[rec_chi2_var].GetVal();
     auto dca_xy = track[rec_dca_xy_var].GetVal();
     auto dca_z = track[rec_dca_z_var].GetVal();
-    auto delta_phi = AngleDifference(mom4.Phi(), psi_rp);
+    auto delta_phi = AngleDifference(mom4.Phi(), psi_ep);
     if( mom4.Pt() > 0.4 ) {
       h3_rec_delta_phi_theta_centrality_all_->Fill(delta_phi, mom4.Theta(),
                                                    centrality);
@@ -158,10 +163,15 @@ void Yield::LoopRecTracks() {
 void Yield::LoopTruParticles() {
   using AnalysisTree::Particle;
   auto centrality = (*event_header_)[GetVar( "event_header/selected_tof_rpc_hits_centrality" )].GetVal();
+  auto psi_rp = (*sim_header_)[GetVar( "sim_header/reaction_plane" )].GetVal();
 
   auto var_is_primary = GetVar("sim_tracks/is_primary");
   auto qvec = dc_qvector_->At(0);
-  auto psi_rp = qvec.psi(1);
+  auto x_qvec = qvec.x(1);
+  auto y_qvec = qvec.y(1);
+  auto psi_ep = atan2(y_qvec, x_qvec);
+
+  h1_psi_rp_difference_->Fill(AngleDifference(  psi_ep, psi_rp ) );
 
   int idx1 =-1;
   for( auto particle : sim_particles_->Loop() ){
@@ -201,10 +211,9 @@ void Yield::LoopTruParticles() {
 void Yield::UserFinish() {
   out_file_->cd();
   h1_centrality_->Write();
-
-//  out_file_->mkdir("efficiency_projections");
-//  out_file_->cd("efficiency_projections");
-
+  h1_psi_ep_->Write();
+  h1_qx_->Write();
+  h1_qy_->Write();
   out_file_->cd();
   h3_rec_delta_phi_theta_centrality_all_->Write();
   h3_rec_delta_phi_theta_centrality_pid_->Write();
@@ -212,6 +221,7 @@ void Yield::UserFinish() {
   p2_rec_v1_pid_->Write();
   p2_rec_v1_all_->Write();
   if( is_mc_ ) {
+    h1_psi_rp_difference_->Write();
     h3_tru_delta_phi_theta_centrality_all_->Write();
     h3_tru_delta_phi_theta_centrality_pid_->Write();
     h3_tru_pT_theta_centrality_pid_->Write();

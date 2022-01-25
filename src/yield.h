@@ -78,6 +78,12 @@ private:
   TProfile2D* p2_rec_v1_pid_{nullptr};
   TProfile2D* p2_tru_v1_all_{nullptr};
   TProfile2D* p2_rec_v1_all_{nullptr};
+  // QA histograms
+  TH1F* h1_psi_ep_;
+  TH1F* h1_qx_;
+  TH1F* h1_qy_;
+  // MC QA histogram
+  TH1F* h1_psi_rp_difference_;
 
   std::string str_qvector_file_name_;
   TFile* file_qvector_;
