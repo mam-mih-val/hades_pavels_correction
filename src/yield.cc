@@ -117,6 +117,9 @@ void Yield::LoopRecTracks() {
   auto rec_dca_z_var = GetVar("mdc_vtx_tracks/dca_z");
 
   auto qvec = dc_qvector_->At(0);
+  auto mag = qvec.mag(1);
+  if( fabs(mag) < std::numeric_limits<double>::min() )
+    return;
   auto x_qvec = qvec.x(1);
   auto y_qvec = qvec.y(1);
   auto psi_ep = atan2(y_qvec, x_qvec);
