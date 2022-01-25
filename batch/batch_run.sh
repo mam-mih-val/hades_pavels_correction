@@ -35,7 +35,7 @@ $build_dir/yield -i $filelist \
                 -o yield.root \
                 --pdg-code $pdg_code \
                 --q-vector-file=correction_out.root \
-                --q-vector-name=W1_PLAIN \
+                --q-vector-name=Wall_PLAIN \
                 --cuts-macro=Hades/AuAu1.23.C
 
 date $format
