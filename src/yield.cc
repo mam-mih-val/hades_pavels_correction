@@ -140,10 +140,8 @@ void Yield::LoopRecTracks() {
     auto dca_xy = track[rec_dca_xy_var].GetVal();
     auto dca_z = track[rec_dca_z_var].GetVal();
     auto delta_phi = AngleDifference(mom4.Phi(), psi_ep);
-    if( mom4.Pt() > 0.4 ) {
-      h3_rec_delta_phi_theta_centrality_all_->Fill(delta_phi, mom4.Theta(),
-                                                   centrality);
-    }
+    h3_rec_delta_phi_theta_centrality_all_->Fill(delta_phi, mom4.Theta(),
+                                                 centrality);
     p2_rec_v1_all_->Fill( mom4.Theta(), centrality, cos(delta_phi) );
     if( chi2 > 100.0 )
       continue;
